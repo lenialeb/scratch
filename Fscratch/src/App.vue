@@ -2,12 +2,13 @@
   <div>
     <div class="flex flex-row z-10 justify-around items-center w-full fixed top-0 p-8">
       <div class="flex flex-row w-1/12">
-        <h1>logo</h1>
+        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" />
+
       </div>
       <div class="flex w-6/12 justify-evenly items-center">
-        <h1 class=" ">Products</h1>
-        <h1>Order</h1>
-        <h1>Something</h1>
+       <router-link to="/product"><h1 class=" ">Products</h1></router-link> 
+       <router-link to="/order"><h1>Order</h1></router-link>
+       <router-link to="//"><h1>Something</h1></router-link>
       </div>
       <div class="relative w-4/12">
         <input
@@ -35,6 +36,8 @@
       </div>
     </div>
     <RouterView :addtocart="handleAddtocart" />
+    <!-- <hr class="mb-2"> -->
+    <AppFooter/>
   </div>
 </template>
 
@@ -42,6 +45,7 @@
 import { ref, computed } from 'vue'
 import CartView from './views/CartView.vue'
 import SearchResult from './views/SearchResult.vue'
+import AppFooter from './components/AppFooter.vue'
 
 const searchQuery = ref('')
 const isSidebar = ref(false)

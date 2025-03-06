@@ -35,8 +35,8 @@ onMounted(fetchPro)
 </script>
 
 <template>
-  <div>
-    <div class="w-full mt-24 min-h-screen flex flex-col justify-evenly items-center">
+  <div class="">
+    <div class="w-full mt-24 mb-56  flex flex-col justify-evenly items-center">
       <div class="relative w-11/12 flex flex-col justify-evenly items-center">
         <div class="text-green-400 text-2xl font-mono">Welcome</div>
         <div class="relative w-11/12 h-96 flex items-center justify-center">
