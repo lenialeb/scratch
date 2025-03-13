@@ -28,7 +28,7 @@
             :key="item.id"
             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
           >
-            <td class="px-6 py-4">{{ item.title }}</td>
+            <td class="px-6 py-4">{{ item.name }}</td>
             <td class="px-6 py-4">
               <input
                 type="number"
@@ -39,14 +39,14 @@
               />
             </td>
 
-            <td class="px-6 py-4">{{ item.price }}</td>
-            <td class="px-6 py-4">{{ item.quantity * item.price || 0 }}</td>
+            <!-- <td class="px-6 py-4">{{ item.price }}</td> -->
+            <!-- <td class="px-6 py-4">{{ item.quantity * item.price || 0 }}</td> -->
             <td class="px-6 py-4 cursor-pointer text-red-800" @click="removeItem(item.id)">X</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div class="bg-gray-100 p-2">Total:{{ overallTotal }}</div>
+    <!-- <div class="bg-gray-100 p-2">Total:{{ overallTotal }}</div> -->
   </div>
 
   <div v-else>

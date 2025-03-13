@@ -5,30 +5,58 @@ import { ref, onMounted } from 'vue'
 // import CartView from './CartView.vue';
 import Try from './Try.vue'
 import CartView from './CartView.vue'
-
+import axios from 'axios'
 const products = ref([])
 const isLoading = ref(false)
 const isVisible = ref(false)
 
-const props = defineProps(['addtocart'])
+const props = defineProps(['addtocart','detail'])
 
 const fetchPro = async () => {
   isLoading.value = true
+  const query = `
+        query {
+          products {
+            items {
+              id
+              name
+              description
+              featuredAsset{
+             source
+             }
+            }
+          }
+        }
+      `;
+  // try {
+  //   const response = await fetch('http://localhost:3000/shop-api')
+
+  //   const data = await response.json()
+
+  //   if (!response.ok) {
+  //     throw new Error('Failed to fetch products')
+  //   }
+
+  //   products.value = data
+  // } catch (error) {
+  //   console.error('Error fetching products:', error)
+  // } finally {
+  //   isLoading.value = false
+  // }
   try {
-    const response = await fetch('https://fakestoreapi.com/products')
-
-    const data = await response.json()
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch products')
-    }
-
-    products.value = data
-  } catch (error) {
-    console.error('Error fetching products:', error)
-  } finally {
-    isLoading.value = false
-  }
+        const response = await axios.post('http://localhost:3000/shop-api', {
+          query,
+        });
+      
+        
+        products.value = response.data.data.products.items;
+        
+      } catch (err) {
+        console.error('Error fetching products:', err)
+        console.error(err);
+      } finally {
+        isLoading.value = false;
+      }
 }
 
 onMounted(fetchPro)
@@ -57,7 +85,7 @@ onMounted(fetchPro)
             Recommended Products
           </h1>
           <div class="justify-center flex flex-row">
-            <AppCard :pro="products" @add-to-cart="addtocart" />
+            <AppCard :pro="products" @add-to-cart="addtocart" @product-detail="detail" />
           </div>
           <p v-if="isLoading">Loading...</p>
         </div>

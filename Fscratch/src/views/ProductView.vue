@@ -1,12 +1,15 @@
 <template>
+  
   <div class="mt-24 mb-56 ml-20 justify-evenly items-center w-full">
+    <p v-if="isLoading">Loading...</p>
     <div class="grid grid-cols-4 w-11/12 ">
       <div v-for="product in products" :key="product.id" class="w-full">
         <div
           class="w-3/4 border hover:shadow-lg border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700"
         >
           <div class="flex justify-evenly items-center">
-            <img class="rounded-t-lg w-3/4 h-1/2" :src="product.image" alt="" />
+
+            <img v-if="product.featuredAsset" :src="product.featuredAsset.source" alt="Featured Product Image" />
           </div>
           <div class="p-5">
             
@@ -31,6 +34,7 @@
 </template>
 
 <script lang="ts" setup>
+import axios from 'axios'
 import { onMounted, ref } from 'vue'
 
 const emit = defineEmits(['add-to-cart'])
@@ -40,25 +44,55 @@ const isLoading = ref(false)
 const addToCart = (product) => {
   emit('add-to-cart', product)
 }
-const fetchPro = async () => {
-  isLoading.value = true
-  try {
-    const response = await fetch('https://fakestoreapi.com/products')
+// const fetchPro = async () => {
+//   isLoading.value = true
+//   try {
+//     const response = await fetch('http://localhost:3000/shop-api')
 
-    const data = await response.json()
+//     const data = await response.json()
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch products')
-    }
+//     if (!response) {
+//       throw new Error('Failed to fetch products')
+//     }
 
-    products.value = data
-  } catch (error) {
-    console.error('Error fetching products:', error)
-  } finally {
-    isLoading.value = false
-  }
+//     products.value = data
+//   } catch (error) {
+//     console.error('Error fetching products:', error)
+//   } finally {
+//     isLoading.value = false
+//   }
+// }
+const fetchProducts=async() =>{
+      const query = `
+        query {
+          products {
+            items {
+              id
+              name
+              description
+             featuredAsset{
+             source
+             }
+            
+            
 }
-onMounted(fetchPro)
+          }
+        }
+      `;
+
+      try {
+        const response = await axios.post('http://localhost:3000/shop-api', {
+          query,
+        });
+        products.value = response.data.data.products.items;
+      } catch (err) {
+        console.error('Error fetching products:', err)
+        console.error(err);
+      } finally {
+        isLoading.value = false;
+      }
+    }
+onMounted(fetchProducts)
 </script>
 
 <style></style>
