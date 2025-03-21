@@ -11,7 +11,31 @@ const isLoading = ref(false)
 const isVisible = ref(false)
 
 const props = defineProps(['addtocart','detail'])
+const facets = ref([]);
 
+
+const fetchFacets = async () => {
+  const query = `
+    query {
+      facets {
+        items {
+          name
+          values {
+            name
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const response = await axios.post('http://localhost:3000/shop-api', { query });
+    facets.value = response.data.data.facets.items; // Store facets data
+  } catch (err) {
+    console.error('Error fetching facets:', err);
+  }
+};
+onMounted(fetchFacets)
 const fetchPro = async () => {
   isLoading.value = true
   const query = `
@@ -24,31 +48,20 @@ const fetchPro = async () => {
               featuredAsset{
              source
              }
+             variants{
+             price
+             }
             }
           }
         }
       `;
-  // try {
-  //   const response = await fetch('http://localhost:3000/shop-api')
-
-  //   const data = await response.json()
-
-  //   if (!response.ok) {
-  //     throw new Error('Failed to fetch products')
-  //   }
-
-  //   products.value = data
-  // } catch (error) {
-  //   console.error('Error fetching products:', error)
-  // } finally {
-  //   isLoading.value = false
-  // }
+  
   try {
         const response = await axios.post('http://localhost:3000/shop-api', {
           query,
         });
       
-        
+        console.log("data:",response.data.data.products.items)
         products.value = response.data.data.products.items;
         
       } catch (err) {
@@ -60,11 +73,15 @@ const fetchPro = async () => {
 }
 
 onMounted(fetchPro)
+
+
+
 </script>
 
 <template>
   <div class="">
-    <div class="w-full mt-24 mb-56  flex flex-col justify-evenly items-center">
+    <div class="w-full mt-24 mb-56  flex flex-row justify-evenly items-center">
+      
       <div class="relative w-11/12 flex flex-col justify-evenly items-center">
         <div class="text-green-400 text-2xl font-mono">Welcome</div>
         <div class="relative w-11/12 h-96 flex items-center justify-center">
@@ -89,6 +106,7 @@ onMounted(fetchPro)
           </div>
           <p v-if="isLoading">Loading...</p>
         </div>
+        
       </div>
     </div>
   </div>

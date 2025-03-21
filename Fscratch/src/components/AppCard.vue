@@ -8,7 +8,7 @@
           <div class="flex justify-evenly items-center">
             <!-- <img class="rounded-t-lg w-3/4 h-1/2 cursor-pointer" :src="product.name
             " alt="" /> -->
-                        <img  @click="handleDetail(product.id)" class="rounded-t-lg w-3/4 h-1/2 cursor-pointer"  v-if="product.featuredAsset" :src="product.featuredAsset.source" alt="Featured Product Image" />
+        <img  @click="handleDetail(product.id)" class="rounded-t-lg w-3/4 h-1/2 cursor-pointer"  v-if="product.featuredAsset" :src="product.featuredAsset.source" alt="Featured Product Image" />
 
           </div>
           <div class="p-5">

@@ -1,34 +1,78 @@
+// import axios from 'axios';
+
+// const AUTH_TOKEN_KEY = 'auth_token';
+// const API_URL = "http://localhost:3000/shop-api"
+
+// const axiosClient = axios.create({
+//   baseURL: API_URL, 
+// });
+
+
+// axiosClient.interceptors.request.use((config) => {
+//   const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
+//   if (authToken) {
+ 
+//     config.headers.Authorization = `Bearer ${authToken}`;
+//   }
+//   return config;
+// }, (error) => {
+//   return Promise.reject(error);
+// });
+
+// axiosClient.interceptors.response.use((response) => {
+//   const authHeader = response.headers['vendure-auth-token']; 
+//   if (authHeader) {
+    
+//     localStorage.setItem(AUTH_TOKEN_KEY, authHeader); 
+//   }
+//   return response.data; 
+// }, (error) => {
+//   return Promise.reject(error);
+// });
+
+// export default axiosClient;
+
 import axios from 'axios';
 
-const AUTH_TOKEN_KEY = 'auth_token';
-const API_URL = "http://localhost:3000/shop-api"// Ensure you have this defined in your environment variables
+const AUTH_TOKEN_KEY = 'auth_token'; // Key to store/retrieve auth token from local storage
+const API_URL = 'http://localhost:3000/shop-api'; // Your API URL
 
+// Create an Axios instance
 const axiosClient = axios.create({
-  baseURL: API_URL, // Set your base URL
+  baseURL: API_URL,
 });
 
-// Request Interceptor
+// Adding request interceptor
 axiosClient.interceptors.request.use((config) => {
+  // Retrieve the authorization token from storage if available
   const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
   if (authToken) {
-    // Attach the auth token to the headers of each request
+    // Attach the token in the Authorization header
     config.headers.Authorization = `Bearer ${authToken}`;
   }
-  return config;
+  return config; // Proceed with the request
 }, (error) => {
+  // Handle request errors
   return Promise.reject(error);
 });
 
-// Response Interceptor
+// Adding response interceptor
 axiosClient.interceptors.response.use((response) => {
-  const authHeader = response.headers['vendure-auth-token']; // Adjust based on how your server sends the auth token
-  if (authHeader) {
-    // If the auth token is returned in the response headers
-    localStorage.setItem(AUTH_TOKEN_KEY, authHeader); // Store the token
+  // Log all response headers
+  console.log('Response Headers:', response.headers);
+
+  // Example: Check if the auth token is present in the headers
+  const authToken = response.headers['vendure-auth-token']; // Adapt this header key as needed
+  if (authToken) {
+    // Store the token for future requests
+    localStorage.setItem(AUTH_TOKEN_KEY, authToken);
+    console.log('Auth token saved:', authToken);
   }
-  return response.data; // Return only the data part of the response
+
+  return response; // Return the response for further processing
 }, (error) => {
+  // Handle response errors
+  console.error('Response Error:', error);
   return Promise.reject(error);
 });
-
 export default axiosClient;

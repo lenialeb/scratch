@@ -10,7 +10,7 @@
         <input class="rounded-md p-1 outline-none pl-2 text-sm"  v-model="password" placeholder="Password" required type="password" />
         <input class="rounded-md p-1 outline-none pl-2 text-sm"  v-model="emailAddress" placeholder="Email" required type="email" />
         <button class="rounded-md p-1 bg-green-600 "  type="submit">SIGNUP</button>
-        <router-link to="/login"><p class=" cursor-pointer "  >signin</p></router-link>
+        <router-link to="/login"><p class=" cursor-pointer text-center"  >signin</p></router-link>
       </form>
       </div>
       

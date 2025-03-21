@@ -13,7 +13,7 @@
           <div class="flex justify-evenly items-center">
             <img v-if="product.featuredAsset" :src="product.featuredAsset.source" alt="Featured Product Image" />
 
-            <!-- <img class="rounded-t-lg w-3/4 h-1/2" :src="product.name" alt="" /> -->
+            
           </div>
           <div class="p-5">
             
@@ -23,6 +23,9 @@
             
             <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
               {{ product.description.substring(0, 40) }}...
+            </p>
+            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+             $ {{ product.variants[0].price }}
             </p>
            
             <!-- <div class="flex mb-3">
@@ -43,6 +46,8 @@
             </button>
           </div>
         </div>
+
+        
       </div>
     <div v-else>
       <p>Loading product details...</p>
@@ -69,6 +74,8 @@
     featuredAsset{
     source
     }
+    variants{
+            price}
     
   }
 }`
@@ -86,17 +93,7 @@ try {
       }
     }
 onMounted(fetchProduct)
-  //   try {
-  //     const result = await fetch(`https://fakestoreapi.com/products/${productId}`)
-  //     const data = await result.json()
-  //     product.value=data;
-  //     console.log(product.value)
-  //   } catch (error) {
-      
-  //   }
-  // }
   
-  // onMounted(fetchProduct)
   const addToCart = (product) => {
   if (props.addtocart) {
     props.addtocart(product) 

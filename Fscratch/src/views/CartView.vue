@@ -38,15 +38,17 @@
                 @input="updateTotal(item)"
               />
             </td>
+          
+   
+            <td v-if="item.variants.length > 0"  class="px-6 py-4">{{ item.variants[0].price }}</td>
 
-            <!-- <td class="px-6 py-4">{{ item.price }}</td> -->
-            <!-- <td class="px-6 py-4">{{ item.quantity * item.price || 0 }}</td> -->
+            <td class="px-6 py-4">{{ item.quantity * item.variants[0].price || 0 }}</td>
             <td class="px-6 py-4 cursor-pointer text-red-800" @click="removeItem(item.id)">X</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <!-- <div class="bg-gray-100 p-2">Total:{{ overallTotal }}</div> -->
+    <div class="bg-gray-100 p-2">Total:{{ overallTotal }}</div>
   </div>
 
   <div v-else>
@@ -74,7 +76,7 @@ const updateTotal = (item) => {
 }
 const overallTotal = computed(() => {
   return props.cart.reduce((total, item) => {
-    return total + item.price * item.quantity
+    return total + item.variants[0].price * item.quantity
   }, 0)
 })
 </script>

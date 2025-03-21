@@ -8,7 +8,7 @@
         
         <input class="rounded-md p-1 outline-none pl-2 text-sm"  v-model="password" placeholder="Password" required type="password" />
         <button class="rounded-md p-1 bg-green-600 "  type="submit">SIGNIN</button>
-        <router-link to="/register"><p class=" cursor-pointer "  type="submit">signup</p></router-link>
+        <router-link to="/register"><p class=" cursor-pointer text-center"  type="submit">signup</p></router-link>
       </form>
       </div>
       
@@ -18,8 +18,8 @@
   
   <script>
 import { loginCustomer } from '../services/loginCustomer'; 
+import { useAuth } from '../auth.js'; 
 import { useRouter } from 'vue-router';
-
   export default {
     data() {
       return {
@@ -30,8 +30,13 @@ import { useRouter } from 'vue-router';
       };
     },
     setup() {
-    const router = useRouter(); // Correct usage of useRouter
-    return { router };
+    
+     const router = useRouter(); 
+    const { login } = useAuth();
+     
+    return { router, login };
+    
+   
   },
     methods: {
       async loginCustomer() {
@@ -43,10 +48,13 @@ import { useRouter } from 'vue-router';
   
         try {
           const data = await loginCustomer(input);
-          
-          this.router.push("/");
-          if (data.firstName) {
-            this.message = `Customer created: ${data.username} ${data.username}`;
+          console.log('Received user data:', data);
+        
+          if (data && data.identifier) {
+            this.login(data); // Call the login function to save user state
+            console.log('User successfully logged in:', data);
+        this.$router.push("/");
+            this.message = `Customer created: ${data.identifier} ${data.identifier}`;
           } else {
             this.message = `Error: ${data.message}`;
           }
